@@ -2,17 +2,22 @@ service: quotebot
 
 provider:
   name: aws
-  runtime: nodejs4.3
+  runtime: nodejs6.10
+  region: ap-southeast-1 # Overwrite the default region used. Default is us-east-1
+  timeout: 100
+
 
 functions:
   webhook:
     handler: handler.webhook
     events:
-      - http:  
-          path: webook
+      - http:
+          path: webhook
           method: GET
-          integration: lambda
-      - http: 
-          path: webook
+          cors: true # Turn on CORS for this endpoint, but don't forget to return the right header in your response
+      - http:
+          path: webhook
           method: POST
-          integration: lambda
+          cors: true # Turn on CORS for this endpoint, but don't forget to return the right header in your response
+plugins:
+  - serverless-offline
